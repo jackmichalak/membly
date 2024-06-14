@@ -75,6 +75,7 @@ const Search: React.FC = () => {
       </div>
       <div className="flex items-center justify-center p-4 w-full bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500">
         <textarea
+          autoFocus
           value={query}
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600 overflow-y-auto"
