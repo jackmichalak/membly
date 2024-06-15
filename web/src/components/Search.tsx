@@ -23,6 +23,13 @@ const Search: React.FC = () => {
     setQuery(e.target.value);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
+
   const handleSearch = () => {
     if (!sendEnabled) {
       console.log("Ignoring send request")
@@ -78,6 +85,7 @@ const Search: React.FC = () => {
           autoFocus
           value={query}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600 overflow-y-auto"
           placeholder="Search..."
         />
