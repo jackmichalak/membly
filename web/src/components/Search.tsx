@@ -85,7 +85,7 @@ const Search: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full h-screen bg-gradient-to-r from-orange-100 via-red-100 to-yellow-100">
-      <h1 className="p-4 text-center bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500 text-xl">Membly</h1>
+      <h1 className="p-4 text-center bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500 text-xl shadow-lg">Membly</h1>
       <div ref={messagesRef} className="flex flex-col flex-grow space-y-2 p-4 w-full overflow-y-auto">
         {messages.map((m: Message, i) => {
           return (
@@ -100,7 +100,7 @@ const Search: React.FC = () => {
           )
         })}
       </div>
-      <div className="flex items-center justify-center p-4 w-full bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500">
+      <div className="flex items-center justify-center p-4 w-full bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500 shadow-lg shadow-top z-10">
         <textarea
           autoFocus
           value={query}

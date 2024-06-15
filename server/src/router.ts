@@ -54,7 +54,7 @@ export default class Router {
 
         app.get('/api/query', async (req: Request, res: Response) => {
             let encoded = req.query.encoded as string
-            let parsed = JSON.parse(decodeURIComponent(encoded))
+            let parsed = JSON.parse(encoded) // middleware already decodes this
             let messageHistory: MessageInfo[] = parsed.map((m: any) => { return { role: m.direction === "out" ? "user" : "system", content: m.text } })
             let embedding = await provider.embedText(messageHistory[messageHistory.length - 1].content)
             let results = await db.findPages(embedding)
