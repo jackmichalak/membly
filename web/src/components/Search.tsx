@@ -1,6 +1,6 @@
 'use client' // TODO: see what can keep server side
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Markdown from 'react-markdown'
 
@@ -18,6 +18,8 @@ const Search: React.FC = () => {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([] as Message[])
   const [sendEnabled, setSendEnabled] = useState(true)
+
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setQuery(e.target.value);
@@ -43,6 +45,7 @@ const Search: React.FC = () => {
     setSendEnabled(false)
     setMessages([...messages, queryMessage])
     setQuery("")
+    scrollToBottom();
     let encodedMessages = JSON.stringify([...messages, queryMessage])
     const eventSource = new EventSource(`http://localhost:3001/api/query?encoded=${encodeURIComponent(encodedMessages)}`);
     let completion = ""
@@ -63,10 +66,27 @@ const Search: React.FC = () => {
     };
   };
 
+  const scrollToBottom = () => {
+    const container = messagesRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+
+  useEffect(() => {
+    const container = messagesRef.current;
+    if (container) {
+      let SLOP = Math.max(100, container.clientHeight / 4)
+      if (container.scrollHeight - container.scrollTop <= container.clientHeight + SLOP) {
+        scrollToBottom();
+      }
+    }
+  }, [messages]);
+
   return (
     <div className="flex flex-col w-full h-screen bg-gradient-to-r from-orange-100 via-red-100 to-yellow-100">
       <h1 className="p-4 text-center bg-gradient-to-r from-orange-400 via-red-500 to-yellow-500 text-xl">Membly</h1>
-      <div className="flex flex-col flex-grow space-y-2 p-4 w-full overflow-y-auto">
+      <div ref={messagesRef} className="flex flex-col flex-grow space-y-2 p-4 w-full overflow-y-auto">
         {messages.map((m: Message, i) => {
           return (
             <div key={i} className={"flex mb-4 " + (m.direction === "out" ? "justify-end pl-32" : "justify-start pr-32")}>
