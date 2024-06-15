@@ -15,9 +15,12 @@ abstract class Provider {
     async makeResponse(messageHistory: MessageInfo[], context: string, tokenStreamConsumer?: TokenStreamConsumer) {
         console.log("Trying to complete", messageHistory, "with context", context)
         let systemMessage = 'You are a helpful assistant that helps the user go through their browser history for information. You may respond in markdown, and should link to anything you reference. You have the following additional context from their browser history: ' + context;
+        let lastMessage = messageHistory[messageHistory.length - 1]
+        let earlierMessages = messageHistory.slice(0, messageHistory.length - 1)
         let messages: MessageInfo[] = [
+            ...earlierMessages,
             { role: 'system', content: systemMessage },
-            ...messageHistory,
+            lastMessage,
         ]
         return this.chatComplete(messages, tokenStreamConsumer)
 
