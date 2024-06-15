@@ -2,8 +2,6 @@
 
 Use your browser history as a knowledge base
 
-Note that currently only Firefox is supported.
-
 ## Server setup
 - Install ollama and start it
 - Install postgres (on Mac I recommend https://postgresapp.com/)
